@@ -3,38 +3,207 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-  <meta name="referrer"
-        content="strict-origin-when-cross-origin">
-
-  <title>KFC fingerliking good</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KFC | Finger Lickin' Good</title>
 
   <style>
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: black;
-      height: 100vh;
-      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #f7f5f2;
+      color: #222;
     }
 
-    iframe {
+    header {
+      background: white;
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    .logo {
+      color: #c41230;
+      font-size: 32px;
+      font-weight: 900;
+    }
+
+    nav { font-size: 14px; color: #555; }
+
+    main {
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 7vw, 82px);
+      margin-bottom: 10px;
+    }
+
+    main p {
+      color: #777;
+      font-size: 18px;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 10;
+    }
+
+    .cookie-box {
+      position: fixed;
+      z-index: 11;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      width: min(560px, 92vw);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 15px 60px #0004;
+    }
+
+    .cookie-box h2 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .cookie-box p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.7;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 14px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .accept {
+      background: #c41230;
+      color: white;
+      border: 1px solid #c41230;
+    }
+
+    .reject {
+      background: white;
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    #meme {
+      display: none;
+      position: fixed;
+      inset: 0;
       width: 100vw;
-      height: 100vh;
-      border: none;
+      height: 100dvh;
+      object-fit: contain;
+      background: black;
+      z-index: 999;
+    }
+
+    .playing #meme { display: block; }
+    .playing { overflow: hidden; }
+    .playing #website { display: none; }
+
+    @media(max-width: 480px) {
+      .cookie-box { padding: 22px; }
+      .buttons { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <iframe
-    src="https://www.youtube.com/embed/GTt0jfKBz00?autoplay=1&mute=0&loop=1&playlist=GTt0jfKBz00&controls=0&playsinline=1"
-    title="KFC fingerliking good"
-    referrerpolicy="strict-origin-when-cross-origin"
-    allow="autoplay; encrypted-media; fullscreen"
-    allowfullscreen>
-  </iframe>
+  <div id="website">
+    <header>
+      <div class="logo">KFC</div>
+      <nav>MENU &nbsp;&nbsp; DEALS &nbsp;&nbsp; LOCATIONS</nav>
+    </header>
+
+    <main>
+      <h1>Finger Lickin' Good.</h1>
+      <p>Something delicious is coming your way.</p>
+    </main>
+
+    <div class="overlay"></div>
+
+    <div class="cookie-box">
+      <h2>We value your privacy</h2>
+      <p>
+        We use cookies and similar technologies to
+        improve your browsing experience, analyse site
+        traffic and provide personalised content.
+        By selecting "Accept all cookies", you agree
+        to the use of these technologies.
+      </p>
+
+      <div class="buttons">
+        <button class="reject" id="reject">
+          Reject optional cookies
+        </button>
+        <button class="accept" id="accept">
+          Accept all cookies
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <video id="meme" loop playsinline preload="auto">
+    <source src="video.mp4" type="video/mp4">
+  </video>
+
+  <script>
+    const video = document.getElementById("meme");
+
+    function triggerPrank() {
+      // Switch immediately to the video
+      document.body.classList.add("playing");
+
+      video.muted = false;
+      video.volume = 1;
+      video.currentTime = 0;
+
+      video.play().catch(error => {
+        console.error("Playback error:", error);
+      });
+
+      // Optional real fullscreen request
+      // Requires browser permission and may be denied
+      if (video.requestFullscreen) {
+        video.requestFullscreen().catch(() => {});
+      }
+    }
+
+    document.getElementById("accept")
+      .addEventListener("click", triggerPrank);
+
+    document.getElementById("reject")
+      .addEventListener("click", () => {
+        document.querySelector(".cookie-box").remove();
+        document.querySelector(".overlay").remove();
+      });
+  </script>
 
 </body>
 </html>
